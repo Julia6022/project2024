@@ -1,0 +1,180 @@
+body{
+    background-image: url("https://img.freepik.com/darmowe-wektory/biale-tlo-znak-zapytania-w-minimalistycznym-stylu_1017-25235.jpg?w=1380&t=st=1718106173~exp=1718106773~hmac=33fff3351c21858f4dfe9f8ecf3b19977d929375414f54d779516c8180f1778d");
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+.container-fluid {
+    width: 98%;
+    padding: 20px;
+}
+
+.container-show {
+    display: flex;
+
+}
+
+.dl-horizontal {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-auto-columns: 25%;
+    grid-auto-flow: column;
+}
+
+hr {
+    border: none;
+    border-top: 2px dashed #6b6b6b;
+    color: #fff;
+    background-color: #fff;
+    height: 2px;
+    width: 100%;
+}
+
+
+.comment {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
+.post-question {
+    padding: 30px;
+    background: #f5f5f5;
+    box-shadow: 2px 2px 8px -1px gray;
+    border-collapse: separate;
+    border-spacing: 15px;
+}
+
+.post-answer {
+    padding: 30px;
+    margin: 35px 0;
+    background: #f8f8f8;
+    box-shadow: 2px 2px 8px -1px gray;
+    border-collapse: separate;
+    border-spacing: 15px;
+}
+
+.post-bestanswer {
+    padding: 14px 18px 14px 18px;
+    background: #e5ffc1;
+    border-right: 2px solid #414141;
+    border-bottom: 2px solid #414141;
+    border-left: 2px solid #414141;
+    box-shadow: 0 2px 2px -1px gray;
+    border-collapse: separate;
+    border-spacing: 15px;
+}
+
+.dropdown-menu {
+    --bs-dropdown-bg: #{mix($blue-500, $blue-600)};
+    --bs-dropdown-link-active-bg: #{$blue-700};
+}
+
+.btn-secondary {
+    --bs-btn-bg: #{mix($gray-600, $blue-400, .5)};
+    --bs-btn-border-color: #{rgba($white, .25)};
+    --bs-btn-hover-bg: #{darken(mix($gray-600, $blue-400, .5), 5%)};
+    --bs-btn-hover-border-color: #{rgba($white, .25)};
+    --bs-btn-active-bg: #{darken(mix($gray-600, $blue-400, .5), 10%)};
+    --bs-btn-active-border-color: #{rgba($white, .5)};
+    --bs-btn-focus-border-color: #{rgba($white, .5)};
+    --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .2);
+}
+
+.btn, .btn-primary, .btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+button > a {
+    color: white;
+    text-decoration: none;
+}
+
+button > a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.create_item{
+    color: white;
+    background: #8cd98c;
+    border: 2px #40bf40 solid;
+    border-radius: 25px;
+    padding: 5px 15px 5px 15px;
+    margin-right: 10px;
+    position: absolute;
+    right: 0;
+    top: 10px;
+
+}
+.show_item{
+    color: white;
+    background: #6699ff;
+    border: 2px #3377ff solid;
+    border-radius: 25px;
+    padding: 5px 15px 5px 15px;
+    margin-right: 10px;
+}
+.delete_item{
+    color: white;
+    background: #ff8080;
+    border: 2px #ff0000 solid;
+    border-radius: 25px;
+    padding: 5px 15px 5px 15px;
+    margin-right: 10px;
+}
+.edit_item{
+    color: white;
+    background: #ffd633;
+    border: 2px #ffd11a solid;
+    border-radius: 25px;
+    padding: 5px 15px 5px 15px;
+    margin-right: 10px;
+}
+.delete_icon{
+    transition: 0.2s linear;
+    width: 30px;
+    opacity: 70%;
+}
+.delete_icon:hover{
+    opacity: 100%;
+}
+.add_icon{
+    transition: 0.2s linear;
+    width: 40px;
+    opacity: 70%;
+    position: absolute;
+    right: 40px;
+    top: 8px;
+    z-index: 0;
+}
+.add_icon:hover{
+    opacity: 100%;
+}
+.title_of_page{
+    margin: 20px 0 20px 0;
+}
+.right{
+    position: absolute;
+    right: 40px;
+    top: 10%;
+}
+.right_element{
+    font-size: 14px;
+    text-align: center;
+    z-index: 999;
+    padding: 30px 30px;
+    position: fixed;
+    right: 5%;
+    top: 80vh;
+    color: white;
+    background: rgba(1,1,1,0.8);
+    border-radius: 100px;
+    transition: 0.5s linear;
+}
+.right_element:hover{
+    background:rgba(1,1,1,1) ;
+}
+
