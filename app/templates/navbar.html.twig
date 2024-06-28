@@ -19,9 +19,10 @@
             </ul>
             <li class="nav-item d-flex">
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <div class="nav-link black">{{ app.user.email }}</div>
-                        <a class="nav-link active" href="{{ url('app_logout') }}">{{ 'action.logout'|trans }}</a>
-                        <a class="nav-link active" href="{{ url('app_account_edit', {id: app.user.id}) }}">{{ 'action.account_edit'|trans }}</a>
+                        <div class="nav-link black">{{ app.user.nickname }}</div>
+                        <a class="nav-link active" href="{{ url('app_change_nickname', {id: app.user.id}) }}">{{ 'action.change_nickname'|trans }}</a>
+                        <a class="nav-link active" href="{{ url('app_change_password', {id: app.user.id}) }}">{{ 'action.change_password'|trans }}</a>
+                    <a class="nav-link active" href="{{ url('app_logout') }}">{{ 'action.logout'|trans }}</a>
                 {% else %}
                         <a class="nav-link active" href="{{ url('app_login') }}">{{ 'action.login'|trans }}</a>
                         <a class="nav-link active" href="{{ url('app_register') }}">{{ 'action.register'|trans }}</a>

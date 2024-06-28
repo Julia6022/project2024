@@ -1106,22 +1106,22 @@ Search.appendIndex(
             "summary": "Configures\u0020the\u0020options\u0020for\u0020this\u0020type.",
             "url": "classes/App-Form-Type-TagsType.html#method_configureOptions"
         },                {
-            "fqsen": "\\App\\Form\\Type\\UserType",
+            "fqsen": "\\App\\Form\\Type\\ChangePasswordType",
             "name": "UserType",
             "summary": "Class\u0020UserType.",
             "url": "classes/App-Form-Type-UserType.html"
         },                {
-            "fqsen": "\\App\\Form\\Type\\UserType\u003A\u003AbuildForm\u0028\u0029",
+            "fqsen": "\\App\\Form\\Type\\ChangePasswordType\u003A\u003AbuildForm\u0028\u0029",
             "name": "buildForm",
             "summary": "Builds\u0020the\u0020form.",
             "url": "classes/App-Form-Type-UserType.html#method_buildForm"
         },                {
-            "fqsen": "\\App\\Form\\Type\\UserType\u003A\u003AconfigureOptions\u0028\u0029",
+            "fqsen": "\\App\\Form\\Type\\ChangePasswordType\u003A\u003AconfigureOptions\u0028\u0029",
             "name": "configureOptions",
             "summary": "Configures\u0020the\u0020options\u0020for\u0020this\u0020type.",
             "url": "classes/App-Form-Type-UserType.html#method_configureOptions"
         },                {
-            "fqsen": "\\App\\Form\\Type\\UserType\u003A\u003AgetBlockPrefix\u0028\u0029",
+            "fqsen": "\\App\\Form\\Type\\ChangePasswordType\u003A\u003AgetBlockPrefix\u0028\u0029",
             "name": "getBlockPrefix",
             "summary": "Returns\u0020the\u0020prefix\u0020of\u0020the\u0020template\u0020block\u0020name\u0020for\u0020this\u0020type.",
             "url": "classes/App-Form-Type-UserType.html#method_getBlockPrefix"

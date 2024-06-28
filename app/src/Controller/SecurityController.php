@@ -7,8 +7,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\Type\ChangeNicknameType;
+use App\Form\Type\ChangePasswordType;
 use App\Form\Type\RegistrationType;
-use App\Form\Type\UserType;
 use App\Service\UserServiceInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -136,7 +137,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * Edit action.
+     * Change nickname action.
      *
      * @param Request                     $request        Request
      * @param User                        $user           User entity
@@ -144,16 +145,62 @@ class SecurityController extends AbstractController
      *
      * @return Response Response
      */
-    #[Route('/{id}/account_edit', name: 'app_account_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[Route('/{id}/change_nickname', name: 'app_change_nickname', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function edit(Request $request, User $user, UserPasswordHasherInterface $passwordHasher): Response
+    public function changeNickname(Request $request, User $user, UserPasswordHasherInterface $passwordHasher): Response
     {
         $form = $this->createForm(
-            UserType::class,
+            ChangeNicknameType::class,
             $user,
             [
                 'method' => 'PUT',
-                'action' => $this->generateUrl('app_account_edit', ['id' => $user->getId()]),
+                'action' => $this->generateUrl('app_change_nickname', ['id' => $user->getId()]),
+            ]
+        );
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $hashedPassword = $this->passwordHasher->hashPassword(
+                $user,
+                $user->getPassword()
+            );
+            $user->setPassword($hashedPassword);
+            $this->userService->save($user);
+
+            $this->addFlash(
+                'success',
+                $this->translator->trans('message.success')
+            );
+
+            return $this->redirectToRoute('question_index');
+        }
+
+        return $this->render(
+            'security/edit.html.twig',
+            ['form' => $form->createView()]
+        );
+    }
+
+    /**
+     * Change password action.
+     *
+     * @param Request                     $request        Request
+     * @param User                        $user           User entity
+     * @param UserPasswordHasherInterface $passwordHasher User password interface
+     *
+     * @return Response Response
+     */
+    #[Route('/{id}/change_password', name: 'app_change_password', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function changePassword(Request $request, User $user, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        $form = $this->createForm(
+            ChangePasswordType::class,
+            $user,
+            [
+                'method' => 'PUT',
+                'action' => $this->generateUrl('app_change_password', ['id' => $user->getId()]),
             ]
         );
 

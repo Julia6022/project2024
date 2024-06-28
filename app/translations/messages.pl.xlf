@@ -250,6 +250,14 @@
                 <source>action.account_edit</source>
                 <target>Edycja konta</target>
             </trans-unit>
+            <trans-unit id="action.change_password">
+                <source>action.change_password</source>
+                <target>Zmiana hasła</target>
+            </trans-unit>
+            <trans-unit id="action.change_nickname">
+                <source>action.change_nickname</source>
+                <target>Zmiana nazwy użytkownika</target>
+            </trans-unit>
             <trans-unit id="title.user_delete">
                 <source>title.user_delete</source>
                 <target>Usunięcie użytkownika</target>

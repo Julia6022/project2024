@@ -7,8 +7,8 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Question;
-use App\Entity\User;
 use App\Entity\Tags;
+use App\Entity\User;
 use App\Form\Type\QuestionType;
 use App\Service\AnswerServiceInterface;
 use App\Service\QuestionServiceInterface;
@@ -123,8 +123,8 @@ class QuestionController extends AbstractController
     /**
      * Show by tags action.
      *
-     * @param Tags $tags Tags entity
-     * @param Request  $request  Request
+     * @param Tags    $tags    Tags entity
+     * @param Request $request Request
      *
      * @return Response Response
      */
@@ -136,7 +136,7 @@ class QuestionController extends AbstractController
     )]
     public function showByTags(Tags $tags, Request $request): Response
     {
-        $pagination = $this->questionService->queryByCategory(
+        $pagination = $this->questionService->queryByTags(
             $request->query->getInt('page', 1),
             $tags
         );
@@ -165,16 +165,6 @@ class QuestionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /*$file = $request->files->get('question')['image'];
-            if ($file) {
-                $filename = md5(uniqid()).'.'.$file->guessClientExtension();
-
-                $file->move(
-                    $this->getParameter('uploads_dir'),
-                    $filename
-                );
-                $question->setImage($filename);
-            }*/
             $this->questionService->save($question);
 
             $this->addFlash(

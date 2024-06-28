@@ -246,6 +246,14 @@
                 <source>action.account_edit</source>
                 <target>Account edit</target>
             </trans-unit>
+            <trans-unit id="action.change_password">
+                <source>action.change_password</source>
+                <target>Change password</target>
+            </trans-unit>
+            <trans-unit id="action.change_nickname">
+                <source>action.change_nickname</source>
+                <target>Change nickname</target>
+            </trans-unit>
             <trans-unit id="title.user_delete">
                 <source>title.user_delete</source>
                 <target>User delete</target>

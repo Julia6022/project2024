@@ -7,6 +7,7 @@ namespace App\Service;
 
 use App\Entity\Category;
 use App\Entity\Question;
+use App\Entity\Tags;
 use App\Repository\QuestionRepository;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -66,6 +67,23 @@ class QuestionService implements QuestionServiceInterface
     {
         return $this->paginator->paginate(
             $this->questionRepository->queryByCategory($category),
+            $page,
+            QuestionRepository::PAGINATOR_ITEMS_PER_PAGE
+        );
+    }
+
+    /**
+     * Get paginated list for tags.
+     *
+     * @param int      $page     Page number
+     * @param Tags $tags Tags entity
+     *
+     * @return PaginationInterface Pagination interface
+     */
+    public function queryByTags(int $page, Tags $tags): PaginationInterface
+    {
+        return $this->paginator->paginate(
+            $this->questionRepository->queryByTags($tags),
             $page,
             QuestionRepository::PAGINATOR_ITEMS_PER_PAGE
         );

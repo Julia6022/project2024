@@ -1,6 +1,6 @@
 <?php
 /**
- * User type.
+ * Change Password type.
  */
 
 namespace App\Form\Type;
@@ -15,9 +15,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class UserType.
+ * Class ChangePasswordType.
  */
-class UserType extends AbstractType
+class ChangePasswordType extends AbstractType
 {
     /**
      * Builds the form.
@@ -32,24 +32,7 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'email',
-            EmailType::class,
-            [
-                'label' => 'label.email',
-                'required' => true,
-                'attr' => ['max_length' => 180],
-            ]
-        );
-        $builder->add(
-            'nickname',
-            TextType::class,
-            [
-                'label' => 'label.username',
-                'required' => true,
-                'attr' => ['max_length' => 64],
-            ]
-        );
+
         $builder->add(
             'password',
             RepeatedType::class,

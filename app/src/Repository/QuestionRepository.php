@@ -8,6 +8,7 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use App\Entity\Question;
+use App\Entity\Tags;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -108,6 +109,28 @@ class QuestionRepository extends ServiceEntityRepository
             ->setParameter(':category', $category)
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * Query all records by tags.
+     *
+     * @param Tags $tags Tags entity
+     *
+     * @return QueryBuilder Query builder
+     */
+    public function queryByTags(Tags $tags): QueryBuilder
+    {
+        return $this->getOrCreateQueryBuilder()
+            ->select(
+                'partial question.{id, createdAt, updatedAt, title}',
+                'partial category.{id, title}',
+                'partial tags.{id, title}'
+            )
+            ->join('question.category', 'category')
+            ->leftJoin('question.tags', 'tags')
+            ->orderBy('question.updatedAt', 'DESC')
+            ->where('tags.id = :id')
+            ->setParameter(':id', $tags);
     }
 
     /**
