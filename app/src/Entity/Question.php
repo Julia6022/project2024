@@ -14,8 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Question.
- *
- * @psalm-suppress MissingConstructor
  */
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 #[ORM\Table(name: 'questions')]
@@ -27,48 +25,60 @@ class Question
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private int $id;
+    private ?int $id = null;
 
     /**
      * Created at.
      */
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\Type(\DateTimeImmutable::class)]
     #[Gedmo\Timestampable(on: 'create')]
-    private \DateTimeImmutable $createdAt;
+    private ?\DateTimeImmutable $createdAt = null;
 
     /**
      * Updated at.
      */
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\Type(\DateTimeImmutable::class)]
     #[Gedmo\Timestampable(on: 'update')]
-    private \DateTimeImmutable $updatedAt;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * Title.
      */
     #[ORM\Column(type: 'string', length: 255)]
-    private string $title;
+    #[Assert\Type('string')]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 255)]
+    private ?string $title = null;
+
+    /**
+     * Category.
+     */
+    #[ORM\ManyToOne(targetEntity: Category::class, fetch: 'EXTRA_LAZY')]
+    #[Assert\Type(Category::class)]
+    #[Assert\NotBlank]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
 
     /**
      * Comment.
      */
     #[ORM\Column(length: 5000)]
-    private string $comment;
-
-    /**
-     * Category.
-     */
-    #[ORM\ManyToOne(targetEntity: Category::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private Category $category;
+    #[Assert\Type('string')]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 5000)]
+    private ?string $comment = null;
 
     /**
      * Tags.
+     *
+     * @var ArrayCollection<int, Tags>
      */
     #[Assert\Valid]
     #[ORM\ManyToMany(targetEntity: Tags::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
-    #[ORM\JoinTable(name: 'questions_tags')]
-    private $tags;
+    #[ORM\JoinTable(name: 'question_tags')]
+    private Collection $tags;
 
     /**
      * Author.
@@ -76,7 +86,7 @@ class Question
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     #[Assert\Type(User::class)]
-    private ?User $author;
+    private ?User $author = null;
 
     /**
      * Constructor.
@@ -89,9 +99,9 @@ class Question
     /**
      * Getter for Id.
      *
-     * @return int Id
+     * @return int|null Id
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -99,9 +109,9 @@ class Question
     /**
      * Getter for created at.
      *
-     * @return \DateTimeImmutable Created at
+     * @return \DateTimeImmutable|null Created at
      */
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -119,9 +129,9 @@ class Question
     /**
      * Getter for updated at.
      *
-     * @return \DateTimeImmutable Updated at
+     * @return \DateTimeImmutable|null Updated at
      */
-    public function getUpdatedAt(): \DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -139,9 +149,9 @@ class Question
     /**
      * Getter for title.
      *
-     * @return string Title
+     * @return string|null Title
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -159,9 +169,9 @@ class Question
     /**
      * Getter for comment.
      *
-     * @return string Comment
+     * @return string|null Comment
      */
-    public function getComment(): string
+    public function getComment(): ?string
     {
         return $this->comment;
     }
@@ -170,22 +180,18 @@ class Question
      * Setter for comment.
      *
      * @param string $comment Comment
-     *
-     * @return $this Comment
      */
-    public function setComment(string $comment): self
+    public function setComment(string $comment): void
     {
         $this->comment = $comment;
-
-        return $this;
     }
 
     /**
      * Getter for category.
      *
-     * @return Category Category
+     * @return Category|null Category
      */
-    public function getCategory(): Category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
@@ -194,14 +200,10 @@ class Question
      * Setter for category.
      *
      * @param Category $category Category
-     *
-     * @return $this Category
      */
-    public function setCategory(Category $category): self
+    public function setCategory(Category $category): void
     {
         $this->category = $category;
-
-        return $this;
     }
 
     /**
@@ -218,8 +220,6 @@ class Question
      * Add tag.
      *
      * @param Tags $tag Tags
-     *
-     * @return void Void
      */
     public function addTag(Tags $tag): void
     {
@@ -232,60 +232,10 @@ class Question
      * Remove tag.
      *
      * @param Tags $tag Tags
-     *
-     * @return void Void
      */
     public function removeTag(Tags $tag): void
     {
         $this->tags->removeElement($tag);
-    }
-
-    /**
-     * Getter for answer.
-     *
-     * @param Answer $answer Answer
-     *
-     * @return Collection Answer
-     */
-    public function getAnswer(Answer $answer): Collection
-    {
-        return $this->$answer;
-    }
-
-    /**
-     * Add answer.
-     *
-     * @param Answer $answer Answer
-     *
-     * @return $this Answer
-     */
-    public function addAnswer(Answer $answer): self
-    {
-        if (!$this->$answer->contains($answer)) {
-            $this->$answer->add($answer);
-            $answer->setQuestion($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove answer.
-     *
-     * @param Answer $answer Answer
-     *
-     * @return $this Answer
-     */
-    public function removeAnswer(Answer $answer): self
-    {
-        if ($this->$answer->removeElement($answer)) {
-            // set the owning side to null (unless already changed)
-            if ($answer->getQuestion() === $this) {
-                $answer->setQuestion(null);
-            }
-        }
-
-        return $this;
     }
 
     /**
@@ -302,13 +252,9 @@ class Question
      * Setter for author.
      *
      * @param User|null $author Author
-     *
-     * @return $this Author
      */
-    public function setAuthor(?User $author): self
+    public function setAuthor(?User $author): void
     {
         $this->author = $author;
-
-        return $this;
     }
 }

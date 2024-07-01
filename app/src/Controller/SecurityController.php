@@ -16,7 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -26,32 +25,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class SecurityController extends AbstractController
 {
     /**
-     * User service.
-     */
-    private UserServiceInterface $userService;
-
-    /**
-     * Password hasher.
-     */
-    private UserPasswordHasherInterface $passwordHasher;
-
-    /**
-     * Translator.
-     */
-    private TranslatorInterface $translator;
-
-    /**
      * Constructor.
      *
      * @param UserServiceInterface        $userService    User interface
      * @param TranslatorInterface         $translator     Translator interface
      * @param UserPasswordHasherInterface $passwordHasher User password interface
      */
-    public function __construct(UserServiceInterface $userService, TranslatorInterface $translator, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(private readonly UserServiceInterface $userService, private readonly TranslatorInterface $translator, private readonly UserPasswordHasherInterface $passwordHasher)
     {
-        $this->userService = $userService;
-        $this->translator = $translator;
-        $this->passwordHasher = $passwordHasher;
     }
 
     /**
@@ -61,10 +42,10 @@ class SecurityController extends AbstractController
      *
      * @return Response Response
      */
-    #[Route(path: '/login', name: 'app_login')]
+    #[\Symfony\Component\Routing\Attribute\Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        if ($this->getUser()) {
+        if ($this->getUser() instanceof \Symfony\Component\Security\Core\User\UserInterface) {
             return $this->redirectToRoute('question_index');
         }
 
@@ -81,7 +62,7 @@ class SecurityController extends AbstractController
      *
      * @return void Void
      */
-    #[Route(path: '/logout', name: 'app_logout')]
+    #[\Symfony\Component\Routing\Attribute\Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
@@ -95,7 +76,7 @@ class SecurityController extends AbstractController
      *
      * @return Response Response
      */
-    #[Route('/register', name: 'app_register')]
+    #[\Symfony\Component\Routing\Attribute\Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $form = $this->createForm(
@@ -127,7 +108,7 @@ class SecurityController extends AbstractController
                 $this->translator->trans('message.success')
             );
 
-            return $this->redirect($this->generateUrl('app_login'));
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('security/registration.html.twig', [
@@ -145,7 +126,7 @@ class SecurityController extends AbstractController
      *
      * @return Response Response
      */
-    #[Route('/{id}/change_nickname', name: 'app_change_nickname', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/change_nickname', name: 'app_change_nickname', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function changeNickname(Request $request, User $user, UserPasswordHasherInterface $passwordHasher): Response
     {
@@ -191,7 +172,7 @@ class SecurityController extends AbstractController
      *
      * @return Response Response
      */
-    #[Route('/{id}/change_password', name: 'app_change_password', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/change_password', name: 'app_change_password', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function changePassword(Request $request, User $user, UserPasswordHasherInterface $passwordHasher): Response
     {

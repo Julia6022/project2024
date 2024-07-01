@@ -45,18 +45,12 @@ class AnswerVoter extends Voter
     public const AWARD = 'AWARD';
 
     /**
-     * Security helper.
-     */
-    private Security $security;
-
-    /**
      * OrderVoter constructor.
      *
      * @param Security $security Security helper
      */
-    public function __construct(Security $security)
+    public function __construct(private readonly Security $security)
     {
-        $this->security = $security;
     }
 
     /**
@@ -135,11 +129,7 @@ class AnswerVoter extends Voter
      */
     private function canDelete(Answer $answer, User $user): bool
     {
-        if ($this->security->isGranted('ROLE_ADMIN') or $answer->getAuthor() === $user) {
-            return true;
-        }
-
-        return false;
+        return $this->security->isGranted('ROLE_ADMIN') || $answer->getAuthor() === $user;
     }
 
     /**
@@ -152,10 +142,6 @@ class AnswerVoter extends Voter
      */
     private function canAward(Answer $answer, User $user): bool
     {
-        if ($this->security->isGranted('ROLE_ADMIN') or $answer->getQuestion()->getAuthor() === $user) {
-            return true;
-        }
-
-        return false;
+        return $this->security->isGranted('ROLE_ADMIN') || $answer->getQuestion()->getAuthor() === $user;
     }
 }

@@ -18,25 +18,13 @@ use Knp\Component\Pager\PaginatorInterface;
 class QuestionService implements QuestionServiceInterface
 {
     /**
-     * Question repository.
-     */
-    private QuestionRepository $questionRepository;
-
-    /**
-     * Paginator.
-     */
-    private PaginatorInterface $paginator;
-
-    /**
      * Constructor.
      *
      * @param QuestionRepository $questionRepository Question repository
      * @param PaginatorInterface $paginator          Paginator
      */
-    public function __construct(QuestionRepository $questionRepository, PaginatorInterface $paginator)
+    public function __construct(private readonly QuestionRepository $questionRepository, private readonly PaginatorInterface $paginator)
     {
-        $this->questionRepository = $questionRepository;
-        $this->paginator = $paginator;
     }
 
     /**
@@ -75,7 +63,7 @@ class QuestionService implements QuestionServiceInterface
     /**
      * Get paginated list for tags.
      *
-     * @param int      $page     Page number
+     * @param int  $page Page number
      * @param Tags $tags Tags entity
      *
      * @return PaginationInterface Pagination interface

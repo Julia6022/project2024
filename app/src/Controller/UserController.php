@@ -14,31 +14,15 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class UserController.
  */
-#[Route('/user')]
+#[\Symfony\Component\Routing\Attribute\Route('/user')]
 #[IsGranted('ROLE_ADMIN')]
 class UserController extends AbstractController
 {
-    /**
-     * User service.
-     */
-    private UserServiceInterface $userService;
-
-    /**
-     * Password hasher.
-     */
-    private UserPasswordHasherInterface $passwordHasher;
-
-    /**
-     * Translator.
-     */
-    private TranslatorInterface $translator;
-
     /**
      * Constructor.
      *
@@ -46,11 +30,8 @@ class UserController extends AbstractController
      * @param TranslatorInterface         $translator     Translator interface
      * @param UserPasswordHasherInterface $passwordHasher User password interface
      */
-    public function __construct(UserServiceInterface $userService, TranslatorInterface $translator, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(private readonly UserServiceInterface $userService, private readonly TranslatorInterface $translator, private readonly UserPasswordHasherInterface $passwordHasher)
     {
-        $this->userService = $userService;
-        $this->translator = $translator;
-        $this->passwordHasher = $passwordHasher;
     }
 
     /**
@@ -60,7 +41,7 @@ class UserController extends AbstractController
      *
      * @return Response Response
      */
-    #[Route(name: 'user_index', methods: 'GET')]
+    #[\Symfony\Component\Routing\Attribute\Route(name: 'user_index', methods: 'GET')]
     public function index(Request $request): Response
     {
         $pagination = $this->userService->getPaginatedList(
@@ -78,7 +59,7 @@ class UserController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/edit', name: 'user_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/edit', name: 'user_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, User $user): Response
     {
@@ -125,7 +106,7 @@ class UserController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/delete', name: 'user_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/delete', name: 'user_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, User $user): Response
     {

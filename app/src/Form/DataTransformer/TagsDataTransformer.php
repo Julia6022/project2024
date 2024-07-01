@@ -18,18 +18,12 @@ use Symfony\Component\Form\DataTransformerInterface;
 class TagsDataTransformer implements DataTransformerInterface
 {
     /**
-     * Tag service.
-     */
-    private TagsServiceInterface $tagService;
-
-    /**
      * Constructor.
      *
      * @param TagsServiceInterface $tagService Tag service
      */
-    public function __construct(TagsServiceInterface $tagService)
+    public function __construct(private readonly TagsServiceInterface $tagService)
     {
-        $this->tagService = $tagService;
     }
 
     /**
@@ -62,7 +56,7 @@ class TagsDataTransformer implements DataTransformerInterface
      *
      * @return array<int, Tags> Result
      */
-    public function reverseTransform($value): array
+    public function reverseTransform($value): object|string
     {
         $tagTitles = explode(',', $value);
 
@@ -71,7 +65,7 @@ class TagsDataTransformer implements DataTransformerInterface
         foreach ($tagTitles as $tagTitle) {
             if ('' !== trim($tagTitle)) {
                 $tag = $this->tagService->findOneByTitle(strtolower($tagTitle));
-                if (null === $tag) {
+                if (!$tag instanceof Tags) {
                     $tag = new Tags();
                     $tag->setTitle($tagTitle);
 

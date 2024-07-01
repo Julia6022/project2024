@@ -7,12 +7,11 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class HomeController.
  */
-#[Route('/home')]
+#[\Symfony\Component\Routing\Attribute\Route('/home')]
 class HomeController extends AbstractController
 {
     /**
@@ -20,7 +19,7 @@ class HomeController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route(name: 'home_index')]
+    #[\Symfony\Component\Routing\Attribute\Route(name: 'home_index')]
     public function index(): Response
     {
         return $this->render(

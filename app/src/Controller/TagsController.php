@@ -12,35 +12,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class TagsController.
  */
-#[Route('/tags')]
+#[\Symfony\Component\Routing\Attribute\Route('/tags')]
 class TagsController extends AbstractController
 {
-    /**
-     * Tags service.
-     */
-    private TagsServiceInterface $tagsService;
-
-    /**
-     * Translator.
-     */
-    private TranslatorInterface $translator;
-
     /**
      * Constructor.
      *
      * @param TagsServiceInterface $tagsService Tags interface
      * @param TranslatorInterface  $translator  Translator interface
      */
-    public function __construct(TagsServiceInterface $tagsService, TranslatorInterface $translator)
+    public function __construct(private readonly TagsServiceInterface $tagsService, private readonly TranslatorInterface $translator)
     {
-        $this->tagsService = $tagsService;
-        $this->translator = $translator;
     }
 
     /**
@@ -50,7 +37,7 @@ class TagsController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route(name: 'tags_index', methods: 'GET')]
+    #[\Symfony\Component\Routing\Attribute\Route(name: 'tags_index', methods: 'GET')]
     public function index(Request $request): Response
     {
         $pagination = $this->tagsService->getPaginatedList(
@@ -67,7 +54,7 @@ class TagsController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route(
+    #[\Symfony\Component\Routing\Attribute\Route(
         '/{id}',
         name: 'tags_show',
         requirements: ['id' => '[1-9]\d*'],
@@ -85,7 +72,7 @@ class TagsController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route(
+    #[\Symfony\Component\Routing\Attribute\Route(
         '/create',
         name: 'tags_create',
         methods: 'GET|POST',
@@ -121,7 +108,7 @@ class TagsController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/edit', name: 'tags_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/edit', name: 'tags_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     public function edit(Request $request, Tags $tags): Response
     {
         $form = $this->createForm(
@@ -162,7 +149,7 @@ class TagsController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/delete', name: 'tags_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/delete', name: 'tags_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     public function delete(Request $request, Tags $tags): Response
     {
         $form = $this->createForm(

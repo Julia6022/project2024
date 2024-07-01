@@ -17,30 +17,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class QuestionController.
  */
-#[Route('/question')]
+#[\Symfony\Component\Routing\Attribute\Route('/question')]
 class QuestionController extends AbstractController
 {
-    /**
-     * Question service.
-     */
-    private QuestionServiceInterface $questionService;
-
-    /**
-     * Answer service.
-     */
-    private AnswerServiceInterface $answerService;
-
-    /**
-     * Translator.
-     */
-    private TranslatorInterface $translator;
-
     /**
      * Constructor.
      *
@@ -48,11 +32,8 @@ class QuestionController extends AbstractController
      * @param AnswerServiceInterface   $answerService   Answer interface
      * @param TranslatorInterface      $translator      Translator interface
      */
-    public function __construct(QuestionServiceInterface $questionService, AnswerServiceInterface $answerService, TranslatorInterface $translator)
+    public function __construct(private readonly QuestionServiceInterface $questionService, private readonly AnswerServiceInterface $answerService, private readonly TranslatorInterface $translator)
     {
-        $this->questionService = $questionService;
-        $this->answerService = $answerService;
-        $this->translator = $translator;
     }
 
     /**
@@ -62,7 +43,7 @@ class QuestionController extends AbstractController
      *
      * @return Response Response
      */
-    #[Route(name: 'question_index', methods: 'GET')]
+    #[\Symfony\Component\Routing\Attribute\Route(name: 'question_index', methods: 'GET')]
     public function index(Request $request): Response
     {
         $pagination = $this->questionService->getPaginatedList(
@@ -80,7 +61,7 @@ class QuestionController extends AbstractController
      *
      * @return Response Response
      */
-    #[Route(
+    #[\Symfony\Component\Routing\Attribute\Route(
         '/{id}',
         name: 'question_show',
         requirements: ['id' => '[1-9]\d*'],
@@ -104,7 +85,7 @@ class QuestionController extends AbstractController
      *
      * @return Response Response
      */
-    #[Route(
+    #[\Symfony\Component\Routing\Attribute\Route(
         '/category/{id}',
         name: 'question_show_by_category',
         requirements: ['id' => '[1-9]\d*'],
@@ -128,7 +109,7 @@ class QuestionController extends AbstractController
      *
      * @return Response Response
      */
-    #[Route(
+    #[\Symfony\Component\Routing\Attribute\Route(
         '/tags/{id}',
         name: 'question_show_by_tags',
         requirements: ['id' => '[1-9]\d*'],
@@ -151,7 +132,7 @@ class QuestionController extends AbstractController
      *
      * @return Response Response
      */
-    #[Route('/create', name: 'question_create', methods: 'GET|POST')]
+    #[\Symfony\Component\Routing\Attribute\Route('/create', name: 'question_create', methods: 'GET|POST')]
     public function create(Request $request): Response
     {
         /** @var User $user */
@@ -189,7 +170,7 @@ class QuestionController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/edit', name: 'question_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/edit', name: 'question_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('EDIT', subject: 'question')]
     public function edit(Request $request, Question $question): Response
     {
@@ -241,7 +222,7 @@ class QuestionController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/delete', name: 'question_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/delete', name: 'question_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     #[IsGranted('DELETE', subject: 'question')]
     public function delete(Request $request, Question $question): Response
     {

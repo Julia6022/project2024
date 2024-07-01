@@ -15,35 +15,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class AnswerController.
  */
-#[Route('/answer')]
+#[\Symfony\Component\Routing\Attribute\Route('/answer')]
 class AnswerController extends AbstractController
 {
-    /**
-     * Answer service.
-     */
-    private AnswerServiceInterface $answerService;
-
-    /**
-     * Translator.
-     */
-    private TranslatorInterface $translator;
-
     /**
      * Constructor.
      *
      * @param AnswerServiceInterface $answerService Answer interface
      * @param TranslatorInterface    $translator    Translator interface
      */
-    public function __construct(AnswerServiceInterface $answerService, TranslatorInterface $translator)
+    public function __construct(private readonly AnswerServiceInterface $answerService, private readonly TranslatorInterface $translator)
     {
-        $this->answerService = $answerService;
-        $this->translator = $translator;
     }
 
     /**
@@ -54,7 +41,7 @@ class AnswerController extends AbstractController
      *
      * @return Response Response
      */
-    #[Route(
+    #[\Symfony\Component\Routing\Attribute\Route(
         '/{id}',
         name: 'answer_create',
         requirements: ['id' => '[1-9]\d*'],
@@ -109,7 +96,7 @@ class AnswerController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/edit', name: 'answer_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/edit', name: 'answer_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('EDIT', subject: 'answer')]
     public function edit(Request $request, Answer $answer): Response
     {
@@ -161,7 +148,7 @@ class AnswerController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/delete', name: 'answer_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/delete', name: 'answer_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     #[IsGranted('DELETE', subject: 'answer')]
     public function delete(Request $request, Answer $answer): Response
     {
@@ -203,7 +190,7 @@ class AnswerController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/mark', name: 'answer_mark', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/mark', name: 'answer_mark', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('AWARD', subject: 'answer')]
     public function mark(Request $request, Answer $answer): Response
     {
@@ -245,7 +232,7 @@ class AnswerController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/unmark', name: 'answer_unmark', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/unmark', name: 'answer_unmark', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('AWARD', subject: 'answer')]
     public function unmark(Request $request, Answer $answer): Response
     {

@@ -5,7 +5,6 @@
 
 namespace App\Security;
 
-use Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,18 +41,12 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     public const DEFAULT_ROUTE = 'question_index';
 
     /**
-     * URL Generator.
-     */
-    private UrlGeneratorInterface $urlGenerator;
-
-    /**
      * Constructor.
      *
      * @param UrlGeneratorInterface $urlGenerator Url generator
      */
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
-        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -118,7 +111,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
      *
      * @return Response|null HTTP response
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {

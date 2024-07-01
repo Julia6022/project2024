@@ -7,15 +7,12 @@
 namespace App\Entity;
 
 use App\Repository\TagsRepository;
-use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Tags.
- *
- * @psalm-suppress MissingConstructor
  */
 #[ORM\Entity(repositoryClass: TagsRepository::class)]
 class Tags
@@ -25,8 +22,8 @@ class Tags
      */
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private int $id;
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
     /**
      * Title.
@@ -35,21 +32,23 @@ class Tags
     #[Assert\Type('string')]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3, max: 32)]
-    private string $title;
+    private ?string $title = null;
 
     /**
      * Created at.
      */
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\Type(\DateTimeImmutable::class)]
     #[Gedmo\Timestampable(on: 'create')]
-    private DateTimeImmutable $createdAt;
+    private ?\DateTimeImmutable $createdAt = null;
 
     /**
      * Updated at.
      */
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\Type(\DateTimeImmutable::class)]
     #[Gedmo\Timestampable(on: 'update')]
-    private DateTimeImmutable $updatedAt;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * Slug.
@@ -58,14 +57,14 @@ class Tags
     #[Assert\Type('string')]
     #[Assert\Length(min: 3, max: 32)]
     #[Gedmo\Slug(fields: ['title'])]
-    private string $slug;
+    private ?string $slug = null;
 
     /**
      * Getter for Id.
      *
-     * @return int Id
+     * @return int|null Id
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -73,9 +72,9 @@ class Tags
     /**
      * Getter for title.
      *
-     * @return string Title
+     * @return string|null Title
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -97,9 +96,9 @@ class Tags
     /**
      * Getter for created at.
      *
-     * @return DateTimeImmutable CreatedAt
+     * @return \DateTimeImmutable|null CreatedAt
      */
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -107,11 +106,11 @@ class Tags
     /**
      * Setter for created at.
      *
-     * @param DateTimeImmutable $createdAt CreatedAt
+     * @param \DateTimeImmutable $createdAt CreatedAt
      *
      * @return $this CreatedAt
      */
-    public function setCreatedAt(DateTimeImmutable $createdAt): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
 
@@ -121,9 +120,9 @@ class Tags
     /**
      * Getter for updated at.
      *
-     * @return DateTimeImmutable UpdatedAt
+     * @return \DateTimeImmutable|null UpdatedAt
      */
-    public function getUpdatedAt(): DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -131,11 +130,11 @@ class Tags
     /**
      * Setter for updated at.
      *
-     * @param DateTimeImmutable $updatedAt UpdatedAt
+     * @param \DateTimeImmutable $updatedAt UpdatedAt
      *
      * @return $this UpdatedAt
      */
-    public function setUpdatedAt(DateTimeImmutable $updatedAt): self
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
@@ -145,9 +144,9 @@ class Tags
     /**
      * Getter for slug.
      *
-     * @return string Slug
+     * @return string|null Slug
      */
-    public function getSlug(): string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -171,8 +170,8 @@ class Tags
      *
      * @return string String
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->title;
+        return $this->title ?? '';
     }
 }

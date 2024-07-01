@@ -17,25 +17,13 @@ use Knp\Component\Pager\PaginatorInterface;
 class AnswerService implements AnswerServiceInterface
 {
     /**
-     * Answer repository.
-     */
-    private AnswerRepository $answerRepository;
-
-    /**
-     * Paginator.
-     */
-    private PaginatorInterface $paginator;
-
-    /**
      * Constructor.
      *
      * @param AnswerRepository   $answerRepository Answer repository
      * @param PaginatorInterface $paginator        Paginator
      */
-    public function __construct(AnswerRepository $answerRepository, PaginatorInterface $paginator)
+    public function __construct(private readonly AnswerRepository $answerRepository, private readonly PaginatorInterface $paginator)
     {
-        $this->answerRepository = $answerRepository;
-        $this->paginator = $paginator;
     }
 
     /**

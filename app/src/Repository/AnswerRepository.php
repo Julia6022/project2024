@@ -68,7 +68,6 @@ class AnswerRepository extends ServiceEntityRepository
      * Save entity.
      *
      * @param Answer $answer Answer entity
-     *
      */
     public function save(Answer $answer): void
     {
@@ -98,7 +97,7 @@ class AnswerRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->_em->createQueryBuilder();
         $queryBuilder
-            ->update('App\Entity\Answer', 'a')
+            ->update(Answer::class, 'a')
             ->set('a.bestAnswer', 1)
             ->where('a.id = :id')
             ->setParameter(':id', $answer)
@@ -117,7 +116,7 @@ class AnswerRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->_em->createQueryBuilder();
         $queryBuilder
-            ->update('App\Entity\Answer', 'a')
+            ->update(Answer::class, 'a')
             ->set('a.bestAnswer', 0)
             ->where('a.id = :id')
             ->setParameter(':id', $answer)
@@ -132,7 +131,7 @@ class AnswerRepository extends ServiceEntityRepository
      *
      * @return QueryBuilder Query builder
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('answer');
     }

@@ -7,15 +7,12 @@
 namespace App\Entity;
 
 use App\Repository\AnswerRepository;
-use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Answer.
- *
- * @psalm-suppress MissingConstructor
  */
 #[ORM\Entity(repositoryClass: AnswerRepository::class)]
 #[ORM\Table(name: 'answers')]
@@ -27,33 +24,39 @@ class Answer
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private int $id;
+    private ?int $id = null;
 
     /**
      * Comment.
      */
     #[ORM\Column(length: 5000)]
-    private string $comment;
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 5000)]
+    private ?string $comment = null;
 
     /**
      * Created at.
      */
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\Type(\DateTimeImmutable::class)]
     #[Gedmo\Timestampable(on: 'create')]
-    private DateTimeImmutable $createdAt;
+    private ?\DateTimeImmutable $createdAt = null;
 
     /**
      * Updated at.
      */
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\Type(\DateTimeImmutable::class)]
     #[Gedmo\Timestampable(on: 'update')]
-    private DateTimeImmutable $updatedAt;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * Question.
      */
     #[ORM\ManyToOne(targetEntity: Question::class)]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[Assert\NotNull]
+    #[Assert\Type(Question::class)]
     private Question $question;
 
     /**
@@ -67,15 +70,15 @@ class Answer
     /**
      * Best answer.
      */
-    #[ORM\Column(type: 'boolean', options: ['default: 0'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private bool $bestAnswer = false;
 
     /**
      * Getter for Id.
      *
-     * @return int Id
+     * @return int|null Id
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -83,9 +86,9 @@ class Answer
     /**
      * Getter for comment.
      *
-     * @return string Comment
+     * @return string|null Comment
      */
-    public function getComment(): string
+    public function getComment(): ?string
     {
         return $this->comment;
     }
@@ -95,7 +98,7 @@ class Answer
      *
      * @param string $comment Comment
      *
-     * @return $this Comment
+     * @return $this
      */
     public function setComment(string $comment): self
     {
@@ -107,9 +110,9 @@ class Answer
     /**
      * Getter for created at.
      *
-     * @return DateTimeImmutable Created at
+     * @return \DateTimeImmutable|null Created at
      */
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -117,11 +120,11 @@ class Answer
     /**
      * Setter for created at.
      *
-     * @param DateTimeImmutable $createdAt Created at
+     * @param \DateTimeImmutable $createdAt Created at
      *
-     * @return $this Created at
+     * @return $this
      */
-    public function setCreatedAt(DateTimeImmutable $createdAt): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
 
@@ -131,9 +134,9 @@ class Answer
     /**
      * Getter for updated at.
      *
-     * @return DateTimeImmutable Updated at
+     * @return \DateTimeImmutable|null Updated at
      */
-    public function getUpdatedAt(): DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -141,11 +144,11 @@ class Answer
     /**
      * Setter for updated at.
      *
-     * @param DateTimeImmutable $updatedAt Updated at
+     * @param \DateTimeImmutable $updatedAt Updated at
      *
-     * @return $this Updated at
+     * @return $this
      */
-    public function setUpdatedAt(DateTimeImmutable $updatedAt): self
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
@@ -167,7 +170,7 @@ class Answer
      *
      * @param Question $question Question
      *
-     * @return $this Question
+     * @return $this
      */
     public function setQuestion(Question $question): self
     {
@@ -191,7 +194,7 @@ class Answer
      *
      * @param User|null $author Author
      *
-     * @return $this Author
+     * @return $this
      */
     public function setAuthor(?User $author): self
     {
@@ -203,9 +206,9 @@ class Answer
     /**
      * Getter for best answer flag.
      *
-     * @return bool|null Best answer
+     * @return bool Best answer
      */
-    public function isBestAnswer(): ?bool
+    public function isBestAnswer(): bool
     {
         return $this->bestAnswer;
     }
@@ -215,7 +218,7 @@ class Answer
      *
      * @param bool $bestAnswer Best answer
      *
-     * @return $this Best answer
+     * @return $this
      */
     public function setBestAnswer(bool $bestAnswer): self
     {

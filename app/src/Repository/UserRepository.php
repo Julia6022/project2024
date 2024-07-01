@@ -1,5 +1,4 @@
 <?php
-
 /**
  * User repository.
  */
@@ -16,29 +15,15 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
  * @extends ServiceEntityRepository<User>
- *
- * @method User|null find($id, $lockMode = null, $lockVersion = null)
- * @method User|null findOneBy(array $criteria, array $orderBy = null)
- * @method User[]    findAll()
- * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    /**
-     * Items per page.
-     *
-     * Use constants to define configuration options that rarely change instead
-     * of specifying them in configuration files.
-     * See https://symfony.com/doc/current/best_practices.html#configuration
-     *
-     * @constant int
-     */
     public const PAGINATOR_ITEMS_PER_PAGE = 8;
 
     /**
-     * Constructor.
+     * UserRepository constructor.
      *
-     * @param ManagerRegistry $registry Manager registry
+     * @param ManagerRegistry $registry The registry for managing entities
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -46,9 +31,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * Query all records.
+     * Query all users.
      *
-     * @return QueryBuilder Query builder
+     * @return QueryBuilder Returns the QueryBuilder object
      */
     public function queryAll(): QueryBuilder
     {
@@ -57,9 +42,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * Save entity.
+     * Save a user entity.
      *
-     * @param User $user User entity
+     * @param User $user The user entity to save
      */
     public function save(User $user): void
     {
@@ -68,11 +53,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * Remove entity.
+     * Delete a user entity.
      *
-     * @param User $user User entity
-     *
-     * @return void Void
+     * @param User $user The user entity to delete
      */
     public function delete(User $user): void
     {
@@ -81,17 +64,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * Used to upgrade (rehash) the user's password automatically over time.
+     * Upgrade the user's password.
      *
-     * @param PasswordAuthenticatedUserInterface $user              User interface
-     * @param string                             $newHashedPassword Password hasher
+     * @param PasswordAuthenticatedUserInterface $user              The user object
+     * @param string                             $newHashedPassword The new hashed password
      *
-     * @return void Void
+     * @throws UnsupportedUserException if the user instance is not supported
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
         $user->setPassword($newHashedPassword);
@@ -100,13 +83,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * Get or create new query builder.
+     * Get or create a QueryBuilder object.
      *
-     * @param QueryBuilder|null $queryBuilder Query builder
+     * @param QueryBuilder|null $queryBuilder Optional QueryBuilder object
      *
-     * @return QueryBuilder Query builder
+     * @return QueryBuilder Returns the QueryBuilder object
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('user');
     }

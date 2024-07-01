@@ -38,18 +38,12 @@ class QuestionVoter extends Voter
     public const DELETE = 'DELETE';
 
     /**
-     * Security helper.
-     */
-    private Security $security;
-
-    /**
      * OrderVoter constructor.
      *
      * @param Security $security Security helper
      */
-    public function __construct(Security $security)
+    public function __construct(private readonly Security $security)
     {
-        $this->security = $security;
     }
 
     /**
@@ -127,10 +121,6 @@ class QuestionVoter extends Voter
      */
     private function canDelete(Question $question, User $user): bool
     {
-        if ($this->security->isGranted('ROLE_ADMIN') or $question->getAuthor() === $user) {
-            return true;
-        }
-
-        return false;
+        return $this->security->isGranted('ROLE_ADMIN') || $question->getAuthor() === $user;
     }
 }

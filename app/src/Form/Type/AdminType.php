@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class ChangePasswordType.
+ * Class AdminType.
  */
 class AdminType extends AbstractType
 {
@@ -33,51 +33,46 @@ class AdminType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'email',
-            EmailType::class,
-            [
+        $builder
+            ->add('email', EmailType::class, [
                 'label' => 'label.email',
                 'required' => false,
-                'attr' => ['max_length' => 180],
-            ]
-        );
-        $builder->add(
-            'nickname',
-            TextType::class,
-            [
+                'attr' => [
+                    'max_length' => 180,
+                ],
+            ])
+            ->add('nickname', TextType::class, [
                 'label' => 'label.username',
                 'required' => false,
-                'attr' => ['max_length' => 64],
-            ]
-        );
-        $builder->add(
-            'password',
-            RepeatedType::class,
-            [
+                'attr' => [
+                    'max_length' => 64,
+                ],
+            ])
+            ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'required' => false,
-                'first_options' => ['label' => 'Nowe hasło'],
-                'second_options' => ['label' => 'Potwierdź nowe hasło'],
-            ]
-        );
-        $builder->add(
-            'roles',
-            ChoiceType::class,
-            [
-                'attr' => ['class' => 'form-control'],
+                'first_options' => [
+                    'label' => 'Nowe hasło',
+                ],
+                'second_options' => [
+                    'label' => 'Potwierdź nowe hasło',
+                ],
+            ])
+            ->add('roles', ChoiceType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                ],
                 'choices' => [
-                        'ROLE_ADMIN' => [
-                            'Yes' => 'ROLE_ADMIN',
-                        ],
-                        'ROLE_USER' => [
-                            'Yes' => 'ROLE_USER',
-                        ],
+                    'ROLE_ADMIN' => [
+                        'Yes' => 'ROLE_ADMIN',
                     ],
+                    'ROLE_USER' => [
+                        'Yes' => 'ROLE_USER',
+                    ],
+                ],
                 'multiple' => true,
                 'required' => true,
-            ]
-        );
+            ]);
     }
 
     /**
@@ -87,7 +82,9 @@ class AdminType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => User::class]);
+        $resolver->setDefaults([
+            'data_class' => User::class,
+        ]);
     }
 
     /**

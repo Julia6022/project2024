@@ -14,8 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class User.
- *
- * @psalm-suppress MissingConstructor
  */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
@@ -28,7 +26,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private int $id;
+    private ?int $id = null;
 
     /**
      * Email.
@@ -36,7 +34,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Email]
-    private string $email;
+    private ?string $email = null;
 
     /**
      * Roles.
@@ -51,21 +49,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column(type: 'string')]
     #[Assert\NotBlank]
-    private string $password;
+    private ?string $password = null;
 
     /**
      * Nickname.
      */
     #[ORM\Column(type: 'string', length: 64)]
     #[Assert\NotBlank]
-    private string $nickname;
+    private ?string $nickname = null;
 
     /**
      * Getter for id.
      *
-     * @return int Id
+     * @return int|null Id
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -141,11 +139,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Getter for password.
      *
-     * @return string Password
+     * @return string|null Password
      *
-     * @see PasswordAuthenticatedUserInterface Password interface
+     * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }

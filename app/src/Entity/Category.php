@@ -6,7 +6,6 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
-use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -14,8 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Category.
- *
- * @psalm-suppress MissingConstructor
  */
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\Table(name: 'categories')]
@@ -28,23 +25,23 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private int $id;
+    private ?int $id = null;
 
     /**
      * Created at.
      */
     #[ORM\Column(type: 'datetime_immutable')]
-    #[Assert\Type(DateTimeImmutable::class)]
+    #[Assert\Type(\DateTimeImmutable::class)]
     #[Gedmo\Timestampable(on: 'create')]
-    private DateTimeImmutable $createdAt;
+    private ?\DateTimeImmutable $createdAt = null;
 
     /**
      * Updated at.
      */
     #[ORM\Column(type: 'datetime_immutable')]
-    #[Assert\Type(DateTimeImmutable::class)]
+    #[Assert\Type(\DateTimeImmutable::class)]
     #[Gedmo\Timestampable(on: 'update')]
-    private DateTimeImmutable $updatedAt;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * Title.
@@ -52,8 +49,8 @@ class Category
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Type('string')]
     #[Assert\NotBlank]
-    #[Assert\Length(min: 3, max: 64)]
-    private string $title;
+    #[Assert\Length(min: 3, max: 255)]
+    private ?string $title = null;
 
     /**
      * Slug.
@@ -62,14 +59,14 @@ class Category
     #[Assert\Type('string')]
     #[Assert\Length(min: 3, max: 64)]
     #[Gedmo\Slug(fields: ['title'])]
-    private string $slug;
+    private ?string $slug = null;
 
     /**
      * Getter for Id.
      *
-     * @return int Id
+     * @return int|null Id
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -77,9 +74,9 @@ class Category
     /**
      * Getter for created at.
      *
-     * @return DateTimeImmutable Created at
+     * @return \DateTimeImmutable|null Created at
      */
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -87,9 +84,9 @@ class Category
     /**
      * Setter for created at.
      *
-     * @param DateTimeImmutable $createdAt Created at
+     * @param \DateTimeImmutable $createdAt Created at
      */
-    public function setCreatedAt(DateTimeImmutable $createdAt): void
+    public function setCreatedAt(\DateTimeImmutable $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -97,9 +94,9 @@ class Category
     /**
      * Getter for updated at.
      *
-     * @return DateTimeImmutable Updated at
+     * @return \DateTimeImmutable|null Updated at
      */
-    public function getUpdatedAt(): DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -107,9 +104,9 @@ class Category
     /**
      * Setter for updated at.
      *
-     * @param DateTimeImmutable $updatedAt Updated at
+     * @param \DateTimeImmutable $updatedAt Updated at
      */
-    public function setUpdatedAt(DateTimeImmutable $updatedAt): void
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -117,9 +114,9 @@ class Category
     /**
      * Getter for title.
      *
-     * @return string Title
+     * @return string|null Title
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -137,9 +134,9 @@ class Category
     /**
      * Getter for slug.
      *
-     * @return string Slug
+     * @return string|null Slug
      */
-    public function getSlug(): string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -149,7 +146,7 @@ class Category
      *
      * @param string $slug Slug
      *
-     * @return $this Slug
+     * @return $this
      */
     public function setSlug(string $slug): self
     {
